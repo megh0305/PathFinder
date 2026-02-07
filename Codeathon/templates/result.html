@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Future You – Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>🚀 Your Future Career Path</h1>
+    <p class="subtitle">AI-generated career simulation</p>
+
+    <div class="output">
+        <p><b>After 1 Year:</b> {{ data.year_1 }}</p>
+        <p><b>After 3 Years:</b> {{ data.year_3 }}</p>
+        <p><b>After 5 Years:</b> {{ data.year_5 }}</p>
+        <p><b>Expected Salary:</b> {{ data.salary }}</p>
+        <p><b>LinkedIn Profile Summary:</b><br>{{ data.linkedin }}</p>
+    </div>
+
+    <br>
+    <a href="/" style="text-decoration:none;">
+        <button>⬅ Back to Home</button>
+    </a>
+</div>
+
+</body>
+</html>
