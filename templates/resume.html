@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resume Analyzer</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>📄 Resume Analysis & ATS Score</h2>
+  <p class="subtitle">
+    Upload your resume (PDF or DOCX) to check ATS readiness
+  </p>
+
+  <!-- Resume Upload ONLY -->
+  <input type="file" id="resumeFile" accept=".pdf,.docx">
+
+  <!-- Target Role -->
+  <input id="role" placeholder="Target role (e.g., Data Scientist)">
+
+  <button onclick="analyzeResume()">Analyze Resume</button>
+
+  <!-- Output -->
+  <div class="score" id="score"></div>
+  <div class="output" id="result"></div>
+
+  <br>
+  <a href="/"><button>⬅ Back to Portal</button></a>
+</div>
+
+<script>
+function analyzeResume() {
+  const fileInput = document.getElementById("resumeFile");
+
+  if (fileInput.files.length === 0) {
+    alert("Please upload a resume file (PDF or DOCX)");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("resume_file", fileInput.files[0]);
+  formData.append("role", document.getElementById("role").value);
+
+  fetch("/resume-analysis", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    document.getElementById("score").innerText =
+      "ATS Score: " + data.ats_score + " / 100";
+
+    document.getElementById("result").innerHTML = `
+      <h3>✅ Strengths</h3>
+      <ul>
+        ${data.matched_keywords.map(k => `<li>Includes keyword: ${k}</li>`).join("")}
+      </ul>
+
+      <h3>❌ Weaknesses</h3>
+      <ul>
+        ${data.missing_keywords.map(k => `<li>Missing keyword: ${k}</li>`).join("")}
+      </ul>
+
+      <h3>📌 Suggestions</h3>
+      <ul>
+        ${data.suggestions.map(s => `<li>${s}</li>`).join("")}
+      </ul>
+    `;
+  });
+}
+</script>
+
+</body>
+</html>

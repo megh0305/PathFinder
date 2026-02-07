@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Skill Gap</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>✅ Skill Gap Analyzer</h2>
+  <p class="subtitle">Find missing skills & roadmap</p>
+
+  <input id="skills" placeholder="Your current skills">
+  <input id="role" placeholder="Target role (e.g., Data Scientist)">
+
+  <button onclick="analyze()">Analyze</button>
+
+  <div class="output" id="result"></div>
+
+  <br><a href="/"><button>⬅ Back to Portal</button></a>
+</div>
+
+<script>
+function analyze() {
+  fetch("/skill-gap", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      skills: document.getElementById("skills").value.split(","),
+      target_role: document.getElementById("role").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+
+    // 1️⃣ Missing skills section
+    let skillsHTML = "<p><i>No missing skills 🎉 You are well prepared!</i></p>";
+
+    if (data.missing_skills.length > 0) {
+      skillsHTML = "<ul>" +
+        data.missing_skills.map(skill => `<li>${skill}</li>`).join("") +
+        "</ul>";
+    }
+
+    // 2️⃣ Roadmap section
+    let roadmapHTML = "";
+    for (const month in data.roadmap) {
+      roadmapHTML += `<b>${month}</b><ul>`;
+      data.roadmap[month].forEach(step => {
+        roadmapHTML += `<li>${step}</li>`;
+      });
+      roadmapHTML += "</ul>";
+    }
+
+    // 3️⃣ Render output
+    document.getElementById("result").innerHTML = `
+      <h3>🚧 Missing Skills</h3>
+      ${skillsHTML}
+      <h3>🛣 Learning Roadmap</h3>
+      ${roadmapHTML}
+    `;
+  });
+}
+</script>
+
+
+
+
+</body>
+</html>
