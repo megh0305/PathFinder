@@ -52,21 +52,23 @@ function analyzeResume() {
       "ATS Score: " + data.ats_score + " / 100";
 
     document.getElementById("result").innerHTML = `
-      <h3>✅ Strengths</h3>
-      <ul>
-        ${data.matched_keywords.map(k => `<li>Includes keyword: ${k}</li>`).join("")}
-      </ul>
+      <div class="analysis-section">
+        <h3 class="strength">✅ Strengths</h3>
+        <ul>
+          ${data.matched_keywords.map(k => `<li>Includes keyword: ${k}</li>`).join("")}
+        </ul>
 
-      <h3>❌ Weaknesses</h3>
-      <ul>
-        ${data.missing_keywords.map(k => `<li>Missing keyword: ${k}</li>`).join("")}
-      </ul>
+        <h3 class="weakness">❌ Weaknesses</h3>
+        <ul>
+          ${data.missing_keywords.map(k => `<li>Missing keyword: ${k}</li>`).join("")}
+        </ul>
 
-      <h3>📌 Suggestions</h3>
-      <ul>
-        ${data.suggestions.map(s => `<li>${s}</li>`).join("")}
-      </ul>
-    `;
+        <h3 class="suggestion">📌 Suggestions</h3>
+        <ul>
+          ${data.suggestions.map(s => `<li>${s}</li>`).join("")}
+        </ul>
+      </div>
+`    ;
   });
 }
 </script>

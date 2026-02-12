@@ -45,7 +45,10 @@ def extract_text_from_resume(file_path):
 # -------------------------------
 @app.route("/")
 def home():
+    if "user" not in session:
+        return redirect(url_for("login"))
     return render_template("index.html")
+
 
 # -------------------------------
 # 1️⃣ Future-You Career Simulator
@@ -209,6 +212,27 @@ def resume_analysis():
             "Keep resume concise (1–2 pages)"
         ]
     })
+from flask import redirect, url_for, session
+
+app.secret_key = "pathfinder_secret_key"
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        session["user"] = request.form["username"]
+        return redirect(url_for("home"))
+    return render_template("login.html")
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        return redirect(url_for("login"))
+    return render_template("signup.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("login"))
 
 # -------------------------------
 # RUN SERVER

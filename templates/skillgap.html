@@ -54,11 +54,16 @@ function analyze() {
 
     // 3️⃣ Render output
     document.getElementById("result").innerHTML = `
-      <h3>🚧 Missing Skills</h3>
-      ${skillsHTML}
-      <h3>🛣 Learning Roadmap</h3>
-      ${roadmapHTML}
-    `;
+      <div class="card">
+        <h3>🚧 Missing Skills</h3>
+        ${skillsHTML}
+      </div>
+
+      <div class="card">
+        <h3>🛣 Learning Roadmap</h3>
+        ${roadmapHTML}
+      </div>
+      `;
   });
 }
 </script>
