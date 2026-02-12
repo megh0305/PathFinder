@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Future Career</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>🚀 Future-You Career Simulator</h2>
+  <p class="subtitle">See where your career can go</p>
+
+  <input id="skills" placeholder="Skills (comma separated)">
+  <input id="interests" placeholder="Interests">
+  <select id="experience">
+    <option>Student</option>
+    <option>Fresher</option>
+    <option>Professional</option>
+  </select>
+
+  <button onclick="simulate()">Simulate</button>
+
+  <div class="output" id="result"></div>
+
+  <br><a href="/"><button>⬅ Back to Portal</button></a>
+</div>
+
+
+<script>
+function simulate() {
+  fetch("/future-career", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      skills: document.getElementById("skills").value.split(","),
+      interests: document.getElementById("interests").value,
+      experience: document.getElementById("experience").value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("result").innerHTML = `
+      <h3>📅 Career Timeline</h3>
+      <p><b>1 Year:</b> ${data.year_1}</p>
+      <p><b>3 Years:</b> ${data.year_3}</p>
+      <p><b>5 Years:</b> ${data.year_5}</p>
+      <hr>
+      <p><b>💰 Salary:</b> ${data.salary}</p>
+      <p><b>🔗 LinkedIn Summary:</b><br>${data.linkedin_profile}</p>
+    `;
+  });
+}
+</script>
+
+
+</body>
+</html>
